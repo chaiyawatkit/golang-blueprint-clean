@@ -5,50 +5,36 @@
 package mocks
 
 import (
-	gomock "github.com/golang/mock/gomock"
 	entities "golang-blueprint-clean/app/entities"
 	reflect "reflect"
+
+	gomock "github.com/golang/mock/gomock"
 )
 
-// MockUseCase is a mock of UseCase interface
+// MockUseCase is a mock of UseCase interface.
 type MockUseCase struct {
 	ctrl     *gomock.Controller
 	recorder *MockUseCaseMockRecorder
 }
 
-// MockUseCaseMockRecorder is the mock recorder for MockUseCase
+// MockUseCaseMockRecorder is the mock recorder for MockUseCase.
 type MockUseCaseMockRecorder struct {
 	mock *MockUseCase
 }
 
-// NewMockUseCase creates a new mock instance
+// NewMockUseCase creates a new mock instance.
 func NewMockUseCase(ctrl *gomock.Controller) *MockUseCase {
 	mock := &MockUseCase{ctrl: ctrl}
 	mock.recorder = &MockUseCaseMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockUseCase) EXPECT() *MockUseCaseMockRecorder {
 	return m.recorder
 }
 
-// CreateUser mocks base method
-func (m *MockUseCase) CreateUser(input *entities.Users) (*entities.Users, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateUser", input)
-	ret0, _ := ret[0].(*entities.Users)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CreateUser indicates an expected call of CreateUser
-func (mr *MockUseCaseMockRecorder) CreateUser(input interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockUseCase)(nil).CreateUser), input)
-}
-
-// CreateRole mocks base method
+// CreateRole mocks base method.
 func (m *MockUseCase) CreateRole(input *entities.Roles) (*entities.Roles, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateRole", input)
@@ -57,13 +43,28 @@ func (m *MockUseCase) CreateRole(input *entities.Roles) (*entities.Roles, error)
 	return ret0, ret1
 }
 
-// CreateRole indicates an expected call of CreateRole
+// CreateRole indicates an expected call of CreateRole.
 func (mr *MockUseCaseMockRecorder) CreateRole(input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRole", reflect.TypeOf((*MockUseCase)(nil).CreateRole), input)
 }
 
-// FindOneUserData mocks base method
+// CreateUser mocks base method.
+func (m *MockUseCase) CreateUser(input *entities.Users) (*entities.Users, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateUser", input)
+	ret0, _ := ret[0].(*entities.Users)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateUser indicates an expected call of CreateUser.
+func (mr *MockUseCaseMockRecorder) CreateUser(input interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockUseCase)(nil).CreateUser), input)
+}
+
+// FindOneUserData mocks base method.
 func (m *MockUseCase) FindOneUserData(input *entities.UsersFilter) (*entities.Users, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindOneUserData", input)
@@ -72,7 +73,7 @@ func (m *MockUseCase) FindOneUserData(input *entities.UsersFilter) (*entities.Us
 	return ret0, ret1
 }
 
-// FindOneUserData indicates an expected call of FindOneUserData
+// FindOneUserData indicates an expected call of FindOneUserData.
 func (mr *MockUseCaseMockRecorder) FindOneUserData(input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindOneUserData", reflect.TypeOf((*MockUseCase)(nil).FindOneUserData), input)
