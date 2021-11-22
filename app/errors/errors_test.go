@@ -1,8 +1,8 @@
 package errors_test
 
 import (
-	"golang-blueprint-clean/app/errors"
 	"github.com/stretchr/testify/assert"
+	"golang-blueprint-clean/app/errors"
 	"testing"
 )
 

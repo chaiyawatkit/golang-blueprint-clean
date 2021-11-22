@@ -1,13 +1,13 @@
 package customer_test
 
 import (
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/assert"
 	"golang-blueprint-clean/app/entities"
 	"golang-blueprint-clean/app/errors"
 	customerUseCase "golang-blueprint-clean/app/layers/usecases/customer"
 	customerMock "golang-blueprint-clean/app/mocks/customer"
 	testhelper "golang-blueprint-clean/app/test_helpers"
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/assert"
 	"testing"
 )
 

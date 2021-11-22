@@ -1,8 +1,8 @@
 package models
 
 import (
-	"golang-blueprint-clean/app/entities"
 	"github.com/jinzhu/copier"
+	"golang-blueprint-clean/app/entities"
 	"time"
 )
 

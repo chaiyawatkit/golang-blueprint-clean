@@ -5,8 +5,8 @@
 package mocks
 
 import (
-	entities "golang-blueprint-clean/app/entities"
 	gomock "github.com/golang/mock/gomock"
+	entities "golang-blueprint-clean/app/entities"
 	reflect "reflect"
 )
 

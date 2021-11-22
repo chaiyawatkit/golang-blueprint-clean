@@ -2,9 +2,9 @@ package models
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/copier"
 	"golang-blueprint-clean/app/entities"
 	"golang-blueprint-clean/app/errors"
-	"github.com/jinzhu/copier"
 	"time"
 )
 

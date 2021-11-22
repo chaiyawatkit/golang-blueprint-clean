@@ -15,10 +15,8 @@ func (h *handler) FindOneUserData(c *gin.Context) {
 		utils.JSONErrorResponse(c, err)
 		return
 	}
-
 	//boredom.FuncDebug(c, h.UsersUseCase.FindOneUser, findOneUserRequest)
 	UserOutput, err := h.CustomerUseCase.FindOneUserData(findOneUserDataRequest.Entity())
-
 	if err != nil {
 		//boredom.Error(c, err)
 		utils.JSONErrorResponse(c, err)

@@ -2,6 +2,8 @@ package models
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/copier"
+	"golang-blueprint-clean/app/constants"
 	"golang-blueprint-clean/app/entities"
 	"golang-blueprint-clean/app/errors"
 )
@@ -34,11 +36,11 @@ type roleResponse struct {
 
 // Parse parse data to create new record
 func (model *FindOneUserDataRequestJSON) Parse(c *gin.Context) (*FindOneUserDataRequestJSON, error) {
-	err := c.ShouldBindQuery(model)
-	if err != nil {
-		return nil, errors.ParameterError{Message: err.Error()}
+	emptyRequest := FindOneUserDataRequestJSON{}
+	c.ShouldBindQuery(model)
+	if *model == emptyRequest {
+		return nil, errors.ParameterError{Message: constants.EmptyParameter}
 	}
-
 	return model, nil
 }
 
@@ -52,28 +54,9 @@ func (model *FindOneUserDataRequestJSON) Entity() *entities.UsersFilter {
 }
 
 // FindOneUserDataResponseJSON Parse to JSON
-func (model *FindOneUserDataResponseJSON) Parse(data entities.Users) (*FindOneUserDataResponseJSON, error) {
-	dataRoleResponse := roleResponse{
-		ID:          data.Roles.ID,
-		Code:        data.Roles.Code,
-		DisplayName: data.Roles.DisplayName,
-	}
-
-	dataResponse := FindOneUserDataResponseJSON{
-		Email:       data.Email,
-		FirstName:   data.FirstName,
-		LastName:    data.LastName,
-		Age:         data.Age,
-		BirthDate:   data.BirthDate,
-		Address:     data.Address,
-		PhoneNumber: data.PhoneNumber,
-		Provider:    data.Provider,
-		StatusID:    data.StatusID,
-		Role:        dataRoleResponse,
-		RoleTypeID:  data.RoleTypeID,
-	}
-
-	return &dataResponse, nil
+func (model *FindOneUserDataResponseJSON) Parse(data interface{}) (*FindOneUserDataResponseJSON, error) {
+	err := copier.Copy(model, data)
+	return model, err
 }
 
 // FindOneUserDataResponseSwagger Find user date response for swagger

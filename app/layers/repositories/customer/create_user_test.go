@@ -2,10 +2,10 @@ package customer_test
 
 import (
 	gomocket "github.com/Selvatico/go-mocket"
-	"golang-blueprint-clean/app/layers/repositories/customer"
-	testhelper "golang-blueprint-clean/app/test_helpers"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
+	"golang-blueprint-clean/app/layers/repositories/customer"
+	testhelper "golang-blueprint-clean/app/test_helpers"
 	"testing"
 )
 

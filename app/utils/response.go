@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"golang-blueprint-clean/app/errors"
 	"github.com/gin-gonic/gin"
+	"golang-blueprint-clean/app/errors"
 
 	"net/http"
 )

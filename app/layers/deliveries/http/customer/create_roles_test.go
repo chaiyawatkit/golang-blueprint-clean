@@ -1,13 +1,13 @@
 package customer_test
 
 import (
+	"github.com/gin-gonic/gin"
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/assert"
 	"golang-blueprint-clean/app/errors"
 	customerHandler "golang-blueprint-clean/app/layers/deliveries/http/customer"
 	customerMock "golang-blueprint-clean/app/mocks/customer"
 	testhelper "golang-blueprint-clean/app/test_helpers"
-	"github.com/gin-gonic/gin"
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"strings"
