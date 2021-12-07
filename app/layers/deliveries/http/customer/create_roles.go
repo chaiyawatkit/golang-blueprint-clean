@@ -1,6 +1,7 @@
 package customer
 
 import (
+	"github.com/chaiyawatkit/ginney"
 	"github.com/gin-gonic/gin"
 	"golang-blueprint-clean/app/layers/deliveries/http/customer/models"
 	"golang-blueprint-clean/app/utils"
@@ -12,7 +13,8 @@ func (h *handler) CreateRoles(c *gin.Context) {
 	createRoleRequest, err := new(models.CreateRoleRequestJSON).Parse(c)
 	if err != nil {
 		//boredom.Error(c, err)
-		utils.JSONErrorResponse(c, err)
+		humanMsg := utils.GetHumanErrorCode(err.Error())
+		ginney.JSONErrorCodeResponse(c, 401, err, humanMsg)
 		return
 	}
 
