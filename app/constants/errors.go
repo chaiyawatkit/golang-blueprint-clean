@@ -40,3 +40,27 @@ const (
 	CodeExpire                              = "code expire"
 	YourAccountWasDeleted                   = "your account was deleted"
 )
+
+func MissingWithKey(key string) string {
+	return "required field is missing: field '" + key + "' is required."
+}
+
+var (
+	HumanErrorCode = map[string]interface{}{
+		"default":             99,
+		InvalidUsername:       13,
+		PasswordSameAsBefore:  24,
+		IsWeakPassword:        11,
+		InvalidPhoneNumber:    1,
+		InvalidChannelType:    28,
+		InvalidAge:            16,
+		InvalidDisplayName:    26,
+		InvalidFormatBirthDay: 27,
+		YourAccountWasDeleted: 36,
+	}
+
+	HumanSuccessCode = map[string]interface{}{
+		"default":           100,
+		"usernameAvailable": 18,
+	}
+)
