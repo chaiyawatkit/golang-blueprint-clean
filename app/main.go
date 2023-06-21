@@ -1,18 +1,16 @@
 package main
 
 import (
-	"github.com/chaiyawatkit/ginney"
-	"golang-blueprint-clean/app/constants"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"golang-blueprint-clean/app/database"
 	"golang-blueprint-clean/app/env"
+	backofficeRepo "golang-blueprint-clean/app/layers/repositories/back_office"
+	backOfficeUseCase "golang-blueprint-clean/app/layers/usecases/back_office"
 
 	_ "golang-blueprint-clean/app/docs"
 	_healthcheck "golang-blueprint-clean/app/layers/deliveries/http/health_check"
 
-	customerHandler "golang-blueprint-clean/app/layers/deliveries/http/customer"
-	customerRepo "golang-blueprint-clean/app/layers/repositories/customer"
-	customerUseCase "golang-blueprint-clean/app/layers/usecases/customer"
-
+	backOfficeHandler "golang-blueprint-clean/app/layers/deliveries/http/back_office"
 	"log"
 	"net/http"
 	"os"
@@ -21,7 +19,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/pseidemann/finish"
-	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
@@ -40,19 +37,20 @@ func main() {
 	_healthcheck.NewEndpointHTTPHandler(ginEngine)
 	ginEngine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	ginEngine.Use(ginney.LogWithCorrelationIdMiddleware(gin.DefaultWriter, constants.NoLoggedRoutes))
-	ginEngine.Use(ginney.MicroServiceCorrelationIdMiddleware())
-	ginEngine.Use(ginney.FromGinContextToContextMiddleware())
+	//ginEngine.Use(ginney.LogWithCorrelationIdMiddleware(gin.DefaultWriter, constants.NoLoggedRoutes))
+	//ginEngine.Use(ginney.MicroServiceCorrelationIdMiddleware())
+	//ginEngine.Use(ginney.FromGinContextToContextMiddleware())
 
 	dbConn := database.ConnectDB()
 	defer func() {
 		_ = dbConn.Close()
 	}()
-	database.DBMigration()
 
-	customerRepo := customerRepo.InitRepo(dbConn)
-	customerUseCase := customerUseCase.InitUseCase(customerRepo)
-	customerHandler.NewEndpointHttpHandler(ginEngine, customerUseCase)
+	//database.DBMigration()
+
+	backofficeRepo := backofficeRepo.InitRepo(dbConn)
+	backOfficeUseCase := backOfficeUseCase.InitUseCase(backofficeRepo)
+	backOfficeHandler.NewEndpointHttpHandler(ginEngine, backOfficeUseCase)
 
 	port := os.Getenv("PORT")
 	if port == "" {

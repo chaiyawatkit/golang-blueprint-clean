@@ -2,71 +2,42 @@ package testhelper
 
 import (
 	"bytes"
+	"database/sql"
 	gomocket "github.com/Selvatico/go-mocket"
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 	"golang-blueprint-clean/app/entities"
 	"log"
 	"net/http"
 	"net/http/httptest"
-	"time"
 )
 
-// GetMockUserEntity for unit test
-func GetMockUserEntity() entities.Users {
-	age := "20"
-	birthDate := "1999/09/19"
-	address := "9999/99"
-	phoneNumber := "0999999999"
-	mockUserEntity := entities.Users{
-		ID:          1,
-		UserSlug:    "fd9b22a9-30bf-4cfe-8aee-65581ec88a9b",
-		Email:       "tech@mail.co",
-		Password:    "P@ssw0rd",
-		FirstName:   "dev",
-		LastName:    "tech",
-		Age:         &age,
-		BirthDate:   &birthDate,
-		Address:     &address,
-		PhoneNumber: &phoneNumber,
-		AccessToken: nil,
-		Provider:    "OWN",
-		LasLogin:    nil,
-		StatusID:    1,
-		RoleID:      1,
-		RoleTypeID:  1,
-		CreatedAt:   time.Time{},
-		CreatedBy:   "SYSTEM",
-		UpdatedAt:   time.Time{},
-		UpdatedBy:   "SYSTEM",
-		DeletedAt:   nil,
-		DeletedBy:   nil,
+func GetMockBannerList() []entities.Banners {
+	mockBannerEntity := []entities.Banners{
+		{
+			ID:        1,
+			Title:     "kkkk",
+			Thumbnail: "https://www.google.com/",
+			Status:    "y",
+			Type:      "internal",
+			Redirect:  "https://www.google.com/",
+			CreatedAt: 1687313433,
+			EndAt:     1687313433,
+			Segment:   "pb",
+		},
 	}
-	return mockUserEntity
+
+	return mockBannerEntity
 }
 
-// GetMockRoleEntity for unit test
-func GetMockRoleEntity() entities.Roles {
-	mockRoleEntity := entities.Roles{
-		ID:          1,
-		Code:        "CodeTest",
-		DisplayName: "DisplayNameTest",
-		CreatedAt:   time.Time{},
-		UpdatedAt:   time.Time{},
-		DeletedAt:   nil,
-	}
-	return mockRoleEntity
-}
-
-func SetupMockDB() *gorm.DB {
+func SetupMockDB() *sql.DB {
 	gomocket.Catcher.Register()
 
-	db, err := gorm.Open(gomocket.DriverName, "")
+	db, err := sql.Open(gomocket.DriverName, "")
 	if err != nil {
 		log.Fatalf("error mocking up the database %s", err)
 	}
 
-	db.LogMode(true)
+	//db.LogMode(true)
 
 	return db
 }

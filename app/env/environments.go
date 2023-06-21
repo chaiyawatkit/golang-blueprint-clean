@@ -5,19 +5,19 @@ import (
 )
 
 var (
-	PostgresHost     string
-	PostgresPort     string
-	PostgresUser     string
-	PostgresPassword string
-	PostgresDB       string
-	//LogLevel         string
+	OracleUser     string
+	OraclePassword string
+	OracleHost     string
 )
 
 func Init() {
-	PostgresHost = os.Getenv("POSTGRES_HOST")
-	PostgresPort = os.Getenv("POSTGRES_PORT")
-	PostgresDB = os.Getenv("POSTGRES_DB")
-	PostgresUser = os.Getenv("POSTGRES_USER")
-	PostgresPassword = os.Getenv("POSTGRES_PASSWORD")
-	//LogLevel = os.Getenv("LOG_LEVEL", "DEBUG")
+
+	os.Setenv("ORACLE_USER", "system")
+	os.Setenv("ORACLE_PASSWORD", "tiger")
+	os.Setenv("ORACLE_HOST", "localhost:1521/orcl")
+
+	OracleUser = os.Getenv("ORACLE_USER")
+	OraclePassword = os.Getenv("ORACLE_PASSWORD")
+	OracleHost = os.Getenv("ORACLE_HOST")
+
 }

@@ -61,9 +61,11 @@ mockgen:
 	mockgen -source=./app/layers/usecases/$(module_name)/init.go -destination=./app/mocks/$(module_name)/usecase.go
 
 mockgen-all:
-	mockgen -source=./app/layers/repositories/customer/init.go -package mocks -destination=./app/mocks/customer/repo.go
-	mockgen -source=./app/layers/usecases/customer/init.go -package mocks -destination=./app/mocks/customer/usecase.go
+	mockgen -source=./app/layers/repositories/back_office/init.go -package mocks -destination=./app/mocks/back_office/repo.go
+	mockgen -source=./app/layers/usecases/back_office/init.go -package mocks -destination=./app/mocks/back_office/usecase.go
 
 mockgen-customer:
-	mockgen -source=./app/layers/repositories/customer/init.go -package mocks -destination=./app/mocks/customer/repo.go
-	mockgen -source=./app/layers/usecases/customer/init.go -package mocks -destination=./app/mocks/customer/usecase.go
+	mockgen -source=./app/layers/repositories/back_office/init.go -package mocks -destination=./app/mocks/back_office/repo.go
+	mockgen -source=./app/layers/usecases/back_office/init.go -package mocks -destination=./app/mocks/back_office/usecase.go
+
+

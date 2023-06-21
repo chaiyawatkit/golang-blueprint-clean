@@ -39,4 +39,5 @@ const (
 	InvalidActivateCode                     = "invalid activate code"
 	CodeExpire                              = "code expire"
 	YourAccountWasDeleted                   = "your account was deleted"
+	InValidSegment                          = "invalid Segment"
 )
