@@ -2,25 +2,31 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
-	_ "github.com/godror/godror"
 	_ "github.com/golang-migrate/migrate/source/file"
+	go_ora "github.com/sijms/go-ora/v2"
 	"golang-blueprint-clean/app/env"
+	"strconv"
 )
 
 func ConnectDB() *sql.DB {
 
-	connection := fmt.Sprintf(
-		"user=%s password=%s connectString=%s",
-		env.OracleUser,
-		env.OraclePassword,
-		env.OracleHost,
-	)
-
-	db, err := sql.Open("godror", connection)
-
+	port, err := strconv.Atoi(env.OraclePort)
 	if err != nil {
 		panic(err.Error())
+	}
+
+	databaseURL := go_ora.BuildUrl(env.OracleHost, port, env.OracleService, env.OracleUser, env.OraclePassword, nil)
+
+	db, err := sql.Open("oracle", databaseURL)
+	if err != nil {
+
+		panic(err.Error())
+	}
+
+	err = db.Ping()
+	if err != nil {
+		db.Close()
+
 	}
 
 	return db
