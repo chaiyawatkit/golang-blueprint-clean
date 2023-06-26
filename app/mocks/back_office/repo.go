@@ -35,16 +35,17 @@ func (m *MockRepo) EXPECT() *MockRepoMockRecorder {
 }
 
 // FindBanners mocks base method.
-func (m *MockRepo) FindBanners(segment string) ([]entities.Banners, error) {
+func (m *MockRepo) FindBanners(filter *entities.SegmentTypes) ([]entities.Banners, error, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindBanners", segment)
+	ret := m.ctrl.Call(m, "FindBanners", filter)
 	ret0, _ := ret[0].([]entities.Banners)
 	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // FindBanners indicates an expected call of FindBanners.
-func (mr *MockRepoMockRecorder) FindBanners(segment interface{}) *gomock.Call {
+func (mr *MockRepoMockRecorder) FindBanners(filter interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindBanners", reflect.TypeOf((*MockRepo)(nil).FindBanners), segment)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindBanners", reflect.TypeOf((*MockRepo)(nil).FindBanners), filter)
 }

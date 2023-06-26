@@ -17,5 +17,5 @@ func InitUseCase(backOffice backOffice.Repo) UseCase {
 
 // InitUseCase init auth use case
 type UseCase interface {
-	FindBanners(segment string) ([]entities.Banners, error)
+	FindBanners(input entities.SegmentTypes) (*[]entities.Banners, error, error)
 }

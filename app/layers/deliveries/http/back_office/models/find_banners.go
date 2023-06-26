@@ -4,7 +4,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
 	"golang-blueprint-clean/app/constants"
+	"golang-blueprint-clean/app/entities"
 	"golang-blueprint-clean/app/errors"
+)
+
+const (
+	Pb      = "pb"
+	General = "general"
+	Wisdom  = "wisdom"
 )
 
 type FindBannerDataRequestJSON struct {
@@ -32,16 +39,22 @@ func (model *FindBannerDataRequestJSON) Parse(c *gin.Context) (*FindBannerDataRe
 		return nil, errors.ParameterError{Message: constants.EmptyParameter}
 	}
 
-	return model, nil
-}
-
-func (model *FindBannerDataRequestJSON) IsValid() (*FindBannerDataRequestJSON, error) {
-
-	if model.Segment == nil || *model.Segment == "" {
-		return nil, errors.ParameterError{Message: constants.InValidSegment}
+	switch *model.Segment {
+	case Pb, General, Wisdom:
+		return model, nil
 	}
 
-	return model, nil
+	return nil, errors.ParameterError{Message: constants.SegmentType}
+
+}
+
+func (model *FindBannerDataRequestJSON) ToEntity() entities.SegmentTypes {
+
+	segmentTypes := entities.SegmentTypes{}
+	if model.Segment != nil {
+		segmentTypes.SegmentType = model.Segment
+	}
+	return segmentTypes
 }
 
 func (model *FindBannerListResponseJSON) Parse(data interface{}) (*FindBannerListResponseJSON, error) {

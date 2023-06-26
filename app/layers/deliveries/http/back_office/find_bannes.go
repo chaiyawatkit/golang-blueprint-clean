@@ -12,24 +12,21 @@ func (h *handler) FindBanners(c *gin.Context) {
 	findBannersDataRequest, err := new(models.FindBannerDataRequestJSON).Parse(c)
 	if err != nil {
 		//boredom.Error(c, err)
-		utils.JSONErrorResponse(c, err)
-		return
-	}
-
-	findBannersValid, err := findBannersDataRequest.IsValid()
-	if err != nil {
-		utils.JSONErrorResponse(c, err)
+		humanMsg := utils.GetHumanErrorCode(err.Error())
+		utils.JSONErrorCodeResponse(c, 400, err, humanMsg)
 		return
 	}
 
 	//boredom.FuncDebug(c, h.BackOfficeUseCase.FindBanners, FindBannerDataRequestJSON)
-	Banners, err := h.BackOfficeUseCase.FindBanners(*findBannersValid.Segment)
+
+	Banners, err, errMsg := h.BackOfficeUseCase.FindBanners(findBannersDataRequest.ToEntity())
 	if err != nil {
 		//boredom.Error(c, err)
-		utils.JSONErrorResponse(c, err)
+		humanMsg := utils.GetHumanErrorCode(errMsg.Error())
+		utils.JSONErrorCodeResponse(c, 400, err, humanMsg)
 		return
 	}
-	user, _ := new(models.FindBannerListResponseJSON).Parse(Banners)
-
-	utils.JSONSuccessResponse(c, user)
+	bannerList, _ := new(models.FindBannerListResponseJSON).Parse(Banners)
+	humanMsg := utils.GetHumanSuccessCode("default")
+	utils.JSONSuccessCodeResponse(c, bannerList, humanMsg)
 }

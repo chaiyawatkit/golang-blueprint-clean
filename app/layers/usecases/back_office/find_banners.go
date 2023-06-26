@@ -1,16 +1,15 @@
 package back_office
 
 import (
-	"golang-blueprint-clean/app/constants"
 	"golang-blueprint-clean/app/entities"
-	"golang-blueprint-clean/app/errors"
 )
 
-func (useCase *useCase) FindBanners(segment string) ([]entities.Banners, error) {
-	banners, err := useCase.BackOfficeRepo.FindBanners(segment)
+func (useCase *useCase) FindBanners(input entities.SegmentTypes) (*[]entities.Banners, error, error) {
+
+	banners, err, errMsg := useCase.BackOfficeRepo.FindBanners(&input)
 	if err != nil {
-		return nil, errors.InternalError{Message: constants.FailToGetDataFromDB}
+		return nil, err, errMsg
 	}
 
-	return banners, nil
+	return &banners, nil, nil
 }

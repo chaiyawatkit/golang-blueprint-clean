@@ -2,15 +2,13 @@ package main
 
 import (
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"golang-blueprint-clean/app/database"
 	"golang-blueprint-clean/app/env"
 	backofficeRepo "golang-blueprint-clean/app/layers/repositories/back_office"
 	backOfficeUseCase "golang-blueprint-clean/app/layers/usecases/back_office"
 
 	_ "golang-blueprint-clean/app/docs"
-	_healthcheck "golang-blueprint-clean/app/layers/deliveries/http/health_check"
-
 	backOfficeHandler "golang-blueprint-clean/app/layers/deliveries/http/back_office"
+	_healthcheck "golang-blueprint-clean/app/layers/deliveries/http/health_check"
 	"log"
 	"net/http"
 	"os"
@@ -33,23 +31,19 @@ func main() {
 	//boredom.InitL(env.LogLevel)
 	ginEngine := gin.New()
 	ginEngine.Use(gin.Recovery())
-
 	_healthcheck.NewEndpointHTTPHandler(ginEngine)
+
+	ginEngine.Use(CORSMiddleware())
 	ginEngine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	//ginEngine.Use(ginney.LogWithCorrelationIdMiddleware(gin.DefaultWriter, constants.NoLoggedRoutes))
 	//ginEngine.Use(ginney.MicroServiceCorrelationIdMiddleware())
 	//ginEngine.Use(ginney.FromGinContextToContextMiddleware())
 
-	dbConn := database.ConnectDB()
-	defer func() {
-		_ = dbConn.Close()
-	}()
-
-	//database.DBMigration()
-
-	backofficeRepo := backofficeRepo.InitRepo(dbConn)
+	backofficeRepo := backofficeRepo.InitRepo()
 	backOfficeUseCase := backOfficeUseCase.InitUseCase(backofficeRepo)
+
+	//middleware := _middlewareHttp.InitAuthMiddleware(nil)
 	backOfficeHandler.NewEndpointHttpHandler(ginEngine, backOfficeUseCase)
 
 	port := os.Getenv("PORT")
@@ -78,4 +72,17 @@ func main() {
 	}()
 
 	graceful.Wait()
+}
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, X-correlation-ID, x-correlation-id, x-finplus-auth")
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+		c.Next()
+	}
 }

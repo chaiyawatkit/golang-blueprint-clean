@@ -69,3 +69,5 @@ mockgen-customer:
 	mockgen -source=./app/layers/usecases/back_office/init.go -package mocks -destination=./app/mocks/back_office/usecase.go
 
 
+#    mockgen -source E:\golang-project\golang-blueprint-clean\app\layers\repositories\back_office\init.go -package mocks -destination E:\golang-project\golang-blueprint-clean\app\mocks\back_office\repo.go
+#    mockgen -source E:\golang-project\golang-blueprint-clean\app\layers\usecases\back_office\init.go -package mocks -destination E:\golang-project\golang-blueprint-clean\app\mocks\back_office\usecase.go

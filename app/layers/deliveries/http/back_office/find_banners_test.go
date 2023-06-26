@@ -5,10 +5,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	"golang-blueprint-clean/app/entities"
 	"golang-blueprint-clean/app/errors"
 	backOfficeHandler "golang-blueprint-clean/app/layers/deliveries/http/back_office"
 	backOfficeMock "golang-blueprint-clean/app/mocks/back_office"
 	testhelper "golang-blueprint-clean/app/test_helpers"
+	"golang-blueprint-clean/app/utils"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -21,8 +23,8 @@ func TestHandler_FindBanners(t *testing.T) {
 	backOfficeMockUseCase := backOfficeMock.NewMockUseCase(ctrl)
 
 	var (
-		segment = "pb"
 		baseURL = "/v1/banners"
+		segment = utils.ToString("pb")
 	)
 
 	executeWithRequest := func(mockUseCase *backOfficeMock.MockUseCase, segment string) *httptest.ResponseRecorder {
@@ -49,17 +51,23 @@ func TestHandler_FindBanners(t *testing.T) {
 	}
 
 	t.Run("Success : find banner list", func(t *testing.T) {
+
+		segmentType := entities.SegmentTypes{
+			SegmentType: segment,
+		}
 		userMock := testhelper.GetMockBannerList()
-		backOfficeMockUseCase.EXPECT().FindBanners(segment).Return(userMock, nil)
-		res := executeWithRequest(backOfficeMockUseCase, segment)
+		backOfficeMockUseCase.EXPECT().FindBanners(segmentType).Return(&userMock, nil, nil)
+		res := executeWithRequest(backOfficeMockUseCase, "pb")
 		assert.Equal(t, http.StatusOK, res.Code)
 	})
 
 	t.Run("Failure : find banner list error", func(t *testing.T) {
+		segmentType := entities.SegmentTypes{
+			SegmentType: segment,
+		}
+		backOfficeMockUseCase.EXPECT().FindBanners(segmentType).Return(nil, errors.UnprocessableEntity{Message: "err"}, errors.UnprocessableEntity{Message: "err"})
 
-		backOfficeMockUseCase.EXPECT().FindBanners(segment).Return(nil, errors.UnprocessableEntity{Message: "err"})
-
-		res := executeWithRequest(backOfficeMockUseCase, segment)
+		res := executeWithRequest(backOfficeMockUseCase, "pb")
 
 		assert.Equal(t, http.StatusBadRequest, res.Code)
 	})

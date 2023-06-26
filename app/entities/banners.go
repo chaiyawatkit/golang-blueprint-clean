@@ -11,3 +11,7 @@ type Banners struct {
 	EndAt     int
 	Segment   string
 }
+
+type SegmentTypes struct {
+	SegmentType *string
+}

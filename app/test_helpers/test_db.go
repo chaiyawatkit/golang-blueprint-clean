@@ -6,6 +6,7 @@ import (
 	gomocket "github.com/Selvatico/go-mocket"
 	"github.com/gin-gonic/gin"
 	"golang-blueprint-clean/app/entities"
+	"golang-blueprint-clean/app/utils"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -27,6 +28,12 @@ func GetMockBannerList() []entities.Banners {
 	}
 
 	return mockBannerEntity
+}
+
+func GetMockSegmentEntity() entities.SegmentTypes {
+	return entities.SegmentTypes{
+		SegmentType: utils.ToString("pb"),
+	}
 }
 
 func SetupMockDB() *sql.DB {
