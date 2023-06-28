@@ -9,6 +9,9 @@ const (
 	SegmentType                 = "invalid type of segment in list [pb, general, wisdom]"
 	EmptyParameter              = "please specify an parameter"
 	FailToGet                   = "fail to get"
+	MissingFinPlusAuth          = "x-finplus-auth is missing"
+	YourAccountWasDeleted       = "your account was deleted"
+	InvalidResponseFormatError  = "invalid response format"
 )
 
 func MissingWithKey(key string) string {
@@ -31,6 +34,7 @@ var (
 		FailNotFound:                          20,
 		SegmentType:                           21,
 		InValidSegment:                        22,
+		YourAccountWasDeleted:                 36,
 	}
 
 	HumanSuccessCode = map[string]interface{}{

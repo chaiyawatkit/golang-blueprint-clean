@@ -53,3 +53,12 @@ type InternalError struct {
 func (err InternalError) Error() string {
 	return err.Message
 }
+
+// Unauthorized.
+type Unauthorized struct {
+	Message string `json:"message"`
+}
+
+func (err Unauthorized) Error() string {
+	return err.Message
+}

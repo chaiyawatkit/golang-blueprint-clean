@@ -5,10 +5,15 @@ import (
 	"golang-blueprint-clean/app/env"
 	backofficeRepo "golang-blueprint-clean/app/layers/repositories/back_office"
 	backOfficeUseCase "golang-blueprint-clean/app/layers/usecases/back_office"
+	_middlewareHttp "golang-blueprint-clean/app/middlewares/http"
+
+	usersRepo "golang-blueprint-clean/app/layers/repositories/users"
+	usersUseCase "golang-blueprint-clean/app/layers/usecases/users"
 
 	_ "golang-blueprint-clean/app/docs"
 	backOfficeHandler "golang-blueprint-clean/app/layers/deliveries/http/back_office"
 	_healthcheck "golang-blueprint-clean/app/layers/deliveries/http/health_check"
+	usersHandler "golang-blueprint-clean/app/layers/deliveries/http/users"
 	"log"
 	"net/http"
 	"os"
@@ -43,12 +48,16 @@ func main() {
 	backofficeRepo := backofficeRepo.InitRepo()
 	backOfficeUseCase := backOfficeUseCase.InitUseCase(backofficeRepo)
 
-	//middleware := _middlewareHttp.InitAuthMiddleware(nil)
-	backOfficeHandler.NewEndpointHttpHandler(ginEngine, backOfficeUseCase)
+	usersRepo := usersRepo.InitRepo()
+	usersUseCase := usersUseCase.InitUseCase(usersRepo)
+
+	middleware := _middlewareHttp.InitAuthMiddleware(usersUseCase)
+	backOfficeHandler.NewEndpointHttpHandler(ginEngine, middleware, backOfficeUseCase)
+	usersHandler.NewEndpointHttpHandler(ginEngine, middleware, usersUseCase)
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "8081"
 	}
 
 	srv := &http.Server{
