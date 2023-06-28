@@ -5,6 +5,7 @@ import (
 	"golang-blueprint-clean/app/entities"
 	"golang-blueprint-clean/app/errors"
 	"golang-blueprint-clean/app/layers/repositories/back_office/models"
+	"log"
 )
 
 func (r *repo) FindBanners(segment string) ([]entities.Banners, error) {
@@ -12,7 +13,7 @@ func (r *repo) FindBanners(segment string) ([]entities.Banners, error) {
 	query := fmt.Sprintf("SELECT ID,TITLE,THUMBNAIL,CREATED_AT,STATUS,TYPE,REDIRECT,END_AT,SEGMENT FROM BANNERS WHERE SEGMENT='%s'", segment)
 	rows, err := r.Conn.Query(query)
 	if err != nil {
-
+		log.Printf(">>>err%+v", err)
 		return nil, errors.InternalError{Message: err.Error()}
 	}
 	defer rows.Close()

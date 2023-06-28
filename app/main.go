@@ -9,8 +9,11 @@ import (
 
 	_ "golang-blueprint-clean/app/docs"
 	_healthcheck "golang-blueprint-clean/app/layers/deliveries/http/health_check"
+	usersRepo "golang-blueprint-clean/app/layers/repositories/users"
+	usersUseCase "golang-blueprint-clean/app/layers/usecases/users"
 
 	backOfficeHandler "golang-blueprint-clean/app/layers/deliveries/http/back_office"
+	usersHandler "golang-blueprint-clean/app/layers/deliveries/http/users"
 	"log"
 	"net/http"
 	"os"
@@ -49,8 +52,13 @@ func main() {
 	//database.DBMigration()
 
 	backofficeRepo := backofficeRepo.InitRepo(dbConn)
+	usersRepo := usersRepo.InitRepo(dbConn)
+
 	backOfficeUseCase := backOfficeUseCase.InitUseCase(backofficeRepo)
+	usersUseCase := usersUseCase.InitUseCase(usersRepo)
+
 	backOfficeHandler.NewEndpointHttpHandler(ginEngine, backOfficeUseCase)
+	usersHandler.NewEndpointHttpHandler(ginEngine, usersUseCase)
 
 	port := os.Getenv("PORT")
 	if port == "" {
